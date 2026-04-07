@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "warehouse-optimizer"
+version = "0.1.0"
+description = "Warehouse inventory optimization environment for OpenEnv."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.6",
+  "requests==2.32.3",
+  "streamlit==1.32.2",
+  "plotly==5.19.0",
+  "pydantic==2.6.4",
+  "numpy==1.26.4",
+  "pandas==2.2.1",
+  "scipy==1.12.0",
+  "click==8.1.7",
+  "pyyaml==6.0.1",
+]
+
+[tool.setuptools]
+py-modules = ["app", "inference"]
