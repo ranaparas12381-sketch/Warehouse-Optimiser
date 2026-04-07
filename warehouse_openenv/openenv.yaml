@@ -1,0 +1,53 @@
+name: warehouse-inventory-optimization
+version: "1.0.0"
+description: >
+  Industrial-grade warehouse inventory optimization environment simulating
+  real-world logistics challenges including stochastic demand, supplier
+  lead times, capacity constraints, and multi-SKU management.
+author: OpenEnv Community
+license: MIT
+tags: [logistics, inventory, optimization, operations-research, reinforcement-learning]
+
+observation_space:
+  type: continuous
+  description: "Normalized inventory levels, pipeline inventory, demand forecast, capacity utilization"
+
+action_space:
+  type: discrete_per_sku
+  description: "Order quantities per SKU (non-negative integers)"
+
+reward:
+  type: shaped
+  range: [-1.0, 1.0]
+  description: "Weighted combination of fulfillment, cost efficiency, stockout penalty"
+
+tasks:
+  - id: easy
+    name: single_sku_deterministic
+    difficulty: easy
+    episode_length: 15
+    stochastic: false
+    entry_point: tasks.easy:make_env
+
+  - id: medium
+    name: multi_sku_stochastic
+    difficulty: medium
+    episode_length: 30
+    stochastic: true
+    entry_point: tasks.medium:make_env
+
+  - id: hard
+    name: full_warehouse_optimization
+    difficulty: hard
+    episode_length: 60
+    stochastic: true
+    entry_point: tasks.hard:make_env
+
+graders:
+  easy: graders.easy_grader:EasyGrader
+  medium: graders.medium_grader:MediumGrader
+  hard: graders.hard_grader:HardGrader
+
+baseline:
+  entry_point: baseline.run_baseline:main
+  reproducible: true
