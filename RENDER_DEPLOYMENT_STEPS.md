@@ -169,10 +169,3 @@ If you encounter issues:
 - Review application logs
 - GitHub repository: https://github.com/ranaparas12381-sketch/Warehouse-Optimiser
 
-CONGRATULATIONS!
-
-Your Warehouse Optimization System is now deployed and accessible globally!
-
-Share your live demo URL with hackathon judges and enjoy your professional deployment.
-
-Good luck with your hackathon submission!
