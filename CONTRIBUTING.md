@@ -1,124 +1,80 @@
-CONTRIBUTING TO WAREHOUSE OPTIMIZATION SYSTEM
+# Contributing
 
-Thank you for your interest in contributing to the Warehouse Optimization System. This document provides guidelines for contributing to the project.
+Thank you for contributing to Warehouse Optimizer.
 
-GETTING STARTED
+## Development Scope
 
-Prerequisites
+High-value contributions include:
 
-* Python 3.11 or higher
-* Git for version control
-* Basic understanding of reinforcement learning concepts
-* Familiarity with Streamlit framework
+- simulation improvements in `warehouse_openenv/env`
+- new task variants in `warehouse_openenv/tasks`
+- better evaluation logic in `warehouse_openenv/graders`
+- improved baseline policies in `warehouse_openenv/baseline`
+- documentation and deployment reliability improvements at the repo root
 
-Development Setup
+## Local Setup
 
-1. Fork the repository
-2. Clone your fork locally
-3. Create a virtual environment
-4. Install dependencies
+### Using `uv`
 
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-cd warehouse_openenv
+```bash
+uv sync
+```
+
+### Using `pip`
+
+```bash
 pip install -r requirements.txt
+```
 
-CODE STANDARDS
+## Running the Server
 
-Python Style Guide
+```bash
+uv run server
+```
 
-* Follow PEP 8 style guidelines
-* Use type hints for function parameters and return values
-* Include docstrings for all public functions and classes
-* Maximum line length of 120 characters
+Or:
 
-Code Organization
+```bash
+uvicorn app:app --host 0.0.0.0 --port 7860
+```
 
-* Place environment logic in the env/ directory
-* Add new tasks in the tasks/ directory
-* Implement graders in the graders/ directory
-* Dashboard components belong in dashboard/
+## Running the Baseline Client
 
-TESTING
+```bash
+python inference.py --base-url http://127.0.0.1:7860 --task medium --seed 42
+```
 
-Before submitting changes:
+## Before Opening a Pull Request
 
-1. Test the dashboard locally
-2. Run baseline simulations for all difficulty levels
-3. Verify Docker build completes successfully
-4. Ensure no regression in existing functionality
+Please make sure your change:
 
-PULL REQUEST PROCESS
+- fits the current repository structure
+- keeps the environment endpoints working
+- does not break deployment packaging
+- updates documentation when behavior changes
 
-1. Create a feature branch from main
-2. Make your changes with clear commit messages
-3. Update documentation as needed
-4. Test your changes thoroughly
-5. Submit a pull request with a clear description
+## Coding Expectations
 
-Commit Message Format
+- Follow normal Python style conventions.
+- Use clear names and keep public functions documented.
+- Preserve the separation between root deployment files and simulation logic under `warehouse_openenv/`.
+- Prefer small, reviewable commits over broad unrelated changes.
 
-Use descriptive commit messages:
+## Pull Request Notes
 
-* feat: Add new feature
-* fix: Bug fix
-* docs: Documentation changes
-* refactor: Code refactoring
-* test: Test additions or modifications
+A useful pull request includes:
 
-TYPES OF CONTRIBUTIONS
+- a short problem statement
+- the implementation summary
+- any deployment or validation impact
+- testing notes
 
-We welcome various types of contributions:
+## Documentation
 
-Code Contributions
+If you change:
 
-* New task implementations
-* Enhanced grading algorithms
-* Improved baseline policies
-* Performance optimizations
-* Bug fixes
+- API behavior
+- deployment flow
+- project structure
 
-Documentation
-
-* README improvements
-* Code documentation
-* Usage examples
-* Tutorial content
-
-Testing
-
-* Unit tests
-* Integration tests
-* Performance benchmarks
-
-REPORTING ISSUES
-
-When reporting issues, please include:
-
-* Clear description of the problem
-* Steps to reproduce
-* Expected vs actual behavior
-* Environment details (OS, Python version)
-* Error messages or logs
-
-QUESTIONS AND DISCUSSIONS
-
-For questions or discussions:
-
-* Use GitHub Discussions for general questions
-* Use GitHub Issues for bug reports and feature requests
-
-CODE REVIEW PROCESS
-
-All submissions require review before merging:
-
-* Code quality and style compliance
-* Functionality correctness
-* Documentation completeness
-* Test coverage
-
-RECOGNITION
-
-Contributors will be acknowledged in the project documentation.
-
-Thank you for helping improve the Warehouse Optimization System.
+update the relevant root documentation in the same pull request.
