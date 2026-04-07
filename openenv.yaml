@@ -1,0 +1,21 @@
+name: warehouse-inventory-optimization
+version: "1.0.0"
+description: >
+  OpenEnv-compatible warehouse inventory optimization environment with
+  easy, medium, and hard task variants exposed over HTTP.
+entrypoint:
+  type: http
+  base_url_env: SPACE_HOST
+  health_path: /health
+  reset_path: /reset
+  step_path: /step
+  state_path: /state
+tasks:
+  - id: easy
+    description: Single-SKU deterministic replenishment
+  - id: medium
+    description: Multi-SKU stochastic replenishment
+  - id: hard
+    description: Disruption-aware warehouse optimization
+inference:
+  path: inference.py
