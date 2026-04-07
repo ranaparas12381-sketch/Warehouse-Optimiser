@@ -121,11 +121,3 @@ The system supports extensive configuration through:
 CONTRIBUTING
 
 Contributions are welcome. Please ensure code follows the existing architecture patterns and includes appropriate tests.
-
-LICENSE
-
-MIT License
-
-SUPPORT
-
-For issues and questions, please use the GitHub issue tracker.
