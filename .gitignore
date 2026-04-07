@@ -25,6 +25,8 @@ wheels/
 venv/
 ENV/
 env/
+!warehouse_openenv/env/
+!warehouse_openenv/env/**
 
 # IDEs
 .vscode/
