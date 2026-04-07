@@ -1,6 +1,5 @@
 ---
 title: Warehouse Optimizer
-emoji: "📦"
 colorFrom: blue
 colorTo: green
 sdk: docker
