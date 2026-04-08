@@ -115,6 +115,14 @@ Run the baseline client:
 python inference.py --base-url http://127.0.0.1:7860 --task medium --seed 42
 ```
 
+The inference client emits structured validator output to stdout using line-oriented JSON blocks:
+
+```text
+[START] {...}
+[STEP] {...}
+[END] {...}
+```
+
 ## Docker
 
 Build the container:
@@ -160,6 +168,8 @@ The repository includes the root artifacts commonly required for deployment and 
 - `pyproject.toml`
 - `uv.lock`
 - `server/app.py`
+
+The `inference.py` entrypoint is submission-oriented and prints the required `[START]`, `[STEP]`, and `[END]` stdout markers expected by phase 2 validation.
 
 ## Contributing
 

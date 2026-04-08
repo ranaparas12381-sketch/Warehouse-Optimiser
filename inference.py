@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from dataclasses import dataclass
 from typing import Any, Dict, List
 
@@ -28,6 +29,10 @@ class WarehousePolicy:
         return actions
 
 
+def _emit_block(tag: str, payload: Dict[str, Any]) -> None:
+    print(f"[{tag}] {json.dumps(payload, separators=(',', ':'))}", flush=True)
+
+
 def run_episode(base_url: str, task: str, seed: int) -> Dict[str, Any]:
     policy = WarehousePolicy()
     reset_response = requests.post(
@@ -39,10 +44,23 @@ def run_episode(base_url: str, task: str, seed: int) -> Dict[str, Any]:
     payload = reset_response.json()
     session_id = payload["session_id"]
     observation = payload["observation"]
+    reset_info = payload.get("info", {})
 
     total_reward = 0.0
     steps = 0
     done = False
+
+    _emit_block(
+        "START",
+        {
+            "task": task,
+            "seed": seed,
+            "session_id": session_id,
+            "max_episode_steps": reset_info.get("max_episode_steps"),
+            "num_skus": reset_info.get("num_skus"),
+            "observation": observation,
+        },
+    )
 
     while not done:
         actions = policy.act(observation)
@@ -54,11 +72,34 @@ def run_episode(base_url: str, task: str, seed: int) -> Dict[str, Any]:
         step_response.raise_for_status()
         payload = step_response.json()
         observation = payload["observation"]
-        total_reward += float(payload.get("reward", 0.0))
+        reward = float(payload.get("reward", 0.0))
+        total_reward += reward
         done = bool(payload.get("done", False))
         steps += 1
+        info = payload.get("info", {})
 
-    return {"task": task, "seed": seed, "steps": steps, "total_reward": total_reward}
+        _emit_block(
+            "STEP",
+            {
+                "step": steps,
+                "reward": reward,
+                "done": done,
+                "action": actions,
+                "observation": observation,
+                "info": {
+                    "fulfillment_rate": info.get("fulfillment_rate"),
+                    "total_cost": info.get("total_cost"),
+                    "stockout_count": info.get("stockout_count"),
+                    "inventory": info.get("inventory"),
+                    "demand": info.get("demand"),
+                    "fulfilled": info.get("fulfilled"),
+                },
+            },
+        )
+
+    result = {"task": task, "seed": seed, "steps": steps, "total_reward": total_reward}
+    _emit_block("END", result)
+    return result
 
 
 def main() -> None:
@@ -68,8 +109,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=42)
     args = parser.parse_args()
 
-    result = run_episode(args.base_url, args.task, args.seed)
-    print(result)
+    run_episode(args.base_url, args.task, args.seed)
 
 
 if __name__ == "__main__":
